@@ -277,17 +277,22 @@
                         <span>linkedin.com/in/dev-francisco-bras</span>
                     </div>
                 </div>
-                <form id="contact-form" class="contact-form">
+                <form id="contact-form" action="https://formspree.io/f/mqapndwb" method="POST">
+                    <input type="hidden" name="_replyto" value="fmcantomoreira@gmail.com">
                     <div class="form-group">
-                        <input type="text" id="name" placeholder="Your Name" required>
+                        <input type="text" id="name" name="name" placeholder="Your Name" required>
                     </div>
                     <div class="form-group">
-                        <input type="email" id="email" placeholder="Your Email" required>
+                        <input type="email" id="email" name="email" placeholder="Your Email" required>
                     </div>
                     <div class="form-group">
-                        <textarea id="message" placeholder="Your Message" required></textarea>
+                        <textarea id="message" name="message" placeholder="Your Message" required></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">SEND MESSAGE <i class="far fa-paper-plane"></i></button>
+                    <button type="submit" class="btn btn-primary">
+                        <span class="submit-text">SEND MESSAGE</span>
+                        <div class="loading-spinner"></div>
+                    </button>
+                    <div id="form-status"></div>
                 </form>
             </div>
         </div>
@@ -304,5 +309,6 @@
     </footer>
 
     <script src="js/script.js"></script>
+</div>
 </body>
 </html>

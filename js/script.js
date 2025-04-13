@@ -43,23 +43,50 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Form Submission
+    // Form submission code
     const contactForm = document.getElementById('contact-form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+    const formStatus = document.getElementById('form-status');
+
+    async function handleSubmit(event) {
+        event.preventDefault();
+        const submitButton = contactForm.querySelector('button[type="submit"]');
+        
+        try {
+            submitButton.classList.add('loading');
+            const formData = new FormData(event.target);
             
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
+            const response = await fetch(event.target.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                formStatus.textContent = "Message sent successfully! I'll respond shortly.";
+                formStatus.classList.remove('error');
+                formStatus.classList.add('success');
+                contactForm.reset();
+            } else {
+                throw new Error('Server responded with error');
+            }
+        } catch (error) {
+            formStatus.textContent = "Oops! There was a problem sending your message. Please try again.";
+            formStatus.classList.remove('success');
+            formStatus.classList.add('error');
+        } finally {
+            submitButton.classList.remove('loading');
+            formStatus.style.display = 'block';
             
-            // Here you would typically send the data to a server
-            console.log({ name, email, message });
-            
-            alert(`Thank you for your message, ${name}! I'll get back to you soon.`);
-            contactForm.reset();
-        });
+            // Hide message after 5 seconds
+            setTimeout(() => {
+                formStatus.style.display = 'none';
+            }, 5000);
+        }
     }
+
+contactForm.addEventListener('submit', handleSubmit);
 
     // Set current year in footer
     document.getElementById('year').textContent = new Date().getFullYear();
